@@ -1,0 +1,61 @@
+<div class="form-group row">
+  <div class="col-xs-12">
+    <label class="control-label">Postcode:</label>
+
+    <label class="sr-only">Postcode</label>
+    <input type="postcode" class="form-control"
+           id="inputPassword2" placeholder="Postcode"
+           #postcode
+           (keyup.enter)="onEnter(postcode.value)">
+  </div>
+</div>
+<div *ngIf="distanceKm">
+  <div class="row">
+    <div class="col-xs-12">
+      <label class="control-label">Distance to London
+        Heathrow:</label>
+      {{
+      distanceKm }} km / {{
+      distanceMiles }} miles
+    </div>
+  </div>
+</div>
+<br>
+<div class="row">
+  <div class="col-xs-12">
+    <google-map height="400px" width="1140px"
+                [center]="center" [zoom]="zoom"
+                (mapClick)="moveMap($event)"
+                (mapMousemove)="move($event)">
+      <map-marker *ngFor="let marker of markers"
+                  [position]="marker.position">
+      </map-marker>
+      <map-directions-renderer *ngIf="(directionsResults$ | async) as directionsResults"
+                               [directions]="directionsResults">
+      </map-directions-renderer>
+    </google-map>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <hr>
+    <ul class="list-group">
+      <a class="list-group-item"
+         *ngFor="let postcode of postcodes">
+
+        {{ postcode.region }}, {{ postcode.country }}
+
+        <label class="control-label">postcode:</label>
+        {{ postcode.postcode }}
+
+        <label class="control-label">Latitude:</label>
+        ({{ postcode.latitude
+        }})
+        <label class="control-label">Longitude:</label>
+        {{
+        postcode.longitude }}
+      </a>
+    </ul>
+  </div>
+
+</div>
